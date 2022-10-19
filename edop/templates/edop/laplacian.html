@@ -1,0 +1,168 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Laplician{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .center {
+    display: block;
+    margin-left: 50%;
+    margin-right:50%;
+    width: 200%;
+    height:100%;
+  }
+{% endblock %}
+{% block body %} 
+{% load static %}
+<div class="container">
+
+    <p align="center">
+
+        <b><strong>Laplacian operator</b></strong><br><br></p>
+        <p>
+        Laplacian Operator is also a derivative operator which is used to find edges in an image. The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.
+  <br><br>
+Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.
+<br><br>
+Inward Edges
+<br>
+Outward Edges
+<br><br>
+Let’s see that how Laplacian operator works.
+<br>
+<br>
+
+
+<b><strong>Positive Laplacian Operator</b></strong><br><br>
+In Positive Laplacian we have standard mask in which center element of the mask should be negative and corner elements of mask should be zero.
+<br><br>    
+<table class="table table-dark">
+       
+    <tbody>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>1</td>
+        <td>-4</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
+
+<br><br>
+Positive Laplacian Operator is use to take out outward edges in an image.
+<br>
+<br>
+<b><strong>Negative Laplacian Operator</strong></b><br><br>
+In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.
+<br><br>
+
+<table class="table table-dark">
+       
+    <tbody>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>-1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>-1</td>
+        <td>4</td>
+        <td>-1</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>-1</td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  Negative Laplacian operator is use to take out inward edges in an image<br><br>
+
+  <b><strong>How it works</b></strong><br><br>
+Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. This produces inward and outward edges in an image
+<br><br>
+The important thing is how to apply these filters onto image. Remember we can’t apply both the positive and negative Laplacian operator on the same image. we have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.
+
+Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. Suppose we have a following sample image.
+
+<br>
+<br>
+<b><strong>Sample Image</b></strong>
+<br>
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/edge3.png' %}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+
+<b><strong>After applying Positive Laplacian Operator</b></strong><br>
+After applying positive Laplacian operator we will get the following image.
+<br><br>
+
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/laplacian2.jpeg'%}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+
+<b><strong>After applying Negative Laplacian Operator</b></strong><br>
+After applying negative Laplacian operator we will get the following image.
+<br><br>
+
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/laplacian3.jpeg'%}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+</p>
+
+  <p><b><strong> Upload your image to check filter</b></strong><br>
+    <form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+        <input type="file" id="myFile" name="filename">
+        <br>
+        <input type="submit">
+      </form>
+  <img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+</div>
+
+
+
+{% endblock %}

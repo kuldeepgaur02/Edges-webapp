@@ -1,0 +1,106 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Edges{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .center {
+    display: block;
+    margin-left: 50%;
+    margin-right:50%;
+    width: 200%;
+    height:100%;
+  }
+{% endblock %}
+{% block body %}
+
+{% load static %} 
+<div class="container">
+
+
+    <p align="center"><b><strong>What is Edge Detection?</b></strong><br>
+        <br>
+        
+        Edge detection is a technique of image processing used to identify points in a digital image with discontinuities, simply to say, sharp changes in the image brightness. These points where the image brightness varies sharply are called the edges (or boundaries) of the image.
+    </p>
+     
+    <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/edge.png' %}" alt="My image" class ="center">
+        </div>
+    </div>
+
+
+    <p>
+        It is one of the basic steps in image processing, pattern recognition in images and computer vision. When we process very high-resolution digital images, convolution techniques come to our rescue. Let us understand the convolution operation (represented in the below image using *) using an example-
+
+    </p>
+
+    <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/edge2.png' %}" alt="My image" class="center">
+        </div>
+    </div>
+
+    <p>
+        For this example, we are using 3*3 Prewitt filter as shown in the above image. As shown below, when we apply the filter to perform detection on the given 6*6 image (we have highlighted it in purple for our understanding) the output image will contain ((a11*1)  + (a12*0) + (a13*(-1))+(a21*1)+(a22*0)+(a23*(-1))+(a31*1)+(a32*0)+(a33*(-1))) in the purple square.  We repeat the convolutions horizontally and then vertically to obtain the output image.
+    </p>
+
+    <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/edge3.png' %}" alt="My image" class="center">
+        </div>
+    </div>
+    <p>
+        We would continue the above procedure to get the processed image after edge-detection. But, in the real world, we deal with very high-resolution images for Artificial Intelligence applications. Hence we opt for an algorithm to perform the convolutions, and even use Deep Learning to decide on the best values of the filter. 
+
+    </p>
+    <br>
+    <p>
+        <b><strong>Drawbacks of applying edge computation</b></strong><br>
+        <br>
+
+
+Size of output will be shrunk.
+If you notice in the above example with an input of 6*6 image after applying 3*3 filter, the output image is only 4*4. Usually, the formula is if the size of the input image is n*n and the filter size is r*r, the output image size will be (n-r+1)*(n-r+1). 
+
+Loss of a lot of valuable information, especially from the edges of the input image.
+As the output image size is much reduced than the original image used as input (as discussed above), the information towards the edges of the input image is lost as we don’t iterate multiple times using the filter on the input images’ outer edges (unlike the middle of the input image).  
+        
+    </p>
+
+
+    <p>
+        <b><strong>Techniques to overcome the drawbacks of edge computation</b></strong><br><br>
+
+         To prevent the loss of such valuable information by image shrinkage, we usually use “padding” the input image before applying detection to avoid losing the valuable information in the input images.
+    </p>
+
+<br>
+
+    
+
+   
+
+</div>
+
+
+
+{% endblock %}

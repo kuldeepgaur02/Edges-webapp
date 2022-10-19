@@ -1,0 +1,80 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Schar{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .center {
+    display: block;
+    margin-left: 50%;
+    margin-right:50%;
+    width: 200%;
+    height:100%;
+  }
+{% endblock %}
+{% block body %} 
+{% load static %}
+
+<div class="container">
+    <p align="center">
+        <b><strong>Scharr Operator</b></strong></p>
+        <br>
+        <p>
+        Scharr is also used to detect the second derivatives of an image in horizontal and vertical directions. 
+        <br>You can perform scharr operation on an image using the method scharr(). Following is the syntax of this method −
+        <br><br>
+       <b> Scharr(src, dst, ddepth, dx, dy)</b>
+<br><br>
+       <strong>This method accepts the following parameters −</strong><br>
+
+src − An object of the class Mat representing the source (input) image.<br>
+dst − An object of the class Mat representing the destination (output) image.<br>
+ddepth − An integer variable representing the depth of the image (-1)<br>
+dx − An integer variable representing the x-derivative. (0 or 1)<br>
+dy − An integer variable representing the y-derivative. (0 or 1)<br>
+
+<br><br>
+<b><strong>Input Image</b></strong>
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/schar1.jpeg' %}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+<b><strong>Output Image</b></strong>
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/scahar2.jpeg' %}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+    </p>
+    <p><b><strong> Upload your image to check filter</b></strong><br>
+        <form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+            <input type="file" id="myFile" name="filename">
+            <br>
+            <input type="submit">
+          </form>
+    <img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+</div>
+
+{% endblock %}

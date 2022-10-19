@@ -1,0 +1,167 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Canny{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .center {
+    display: block;
+    margin-left: 50%;
+    margin-right:50%;
+    width: 200%;
+    height:100%;
+  }
+{% endblock %}
+{% block body %}
+{% load static %} 
+<div class ="container">
+    <p align="center"><b><strong>Canny Edge Detection</b></strong>  </p>
+        <br><br>
+        <p>
+        Canny edge detection uses linear filtering with a Gaussian kernel to smooth noise and then computes the edge strength and direction for each pixel in the smoothed image.<br> Candidate edge pixels are identified as the pixels that survive a thinning process called non-maximal suppression. In this process, the edge strength of each candidate edge pixel is set to zero if its edge strength is not larger than the edge strength of the two adjacent pixels in the gradient direction. Thresholding is then done on the thinned edge magnitude image using hysteresis. In hysteresis, two edge strength thresholds are used. All candidate edge pixels below the lower threshold are labeled as non-edges and all pixels above the low threshold that can be connected to any pixel above the high threshold through a chain of edge pixels are labeled as edge pixels.
+        
+        <br>The Canny edge detector requires the user to input three parameters. The first is sigma, the standard deviation of the Gaussian filter specified in pixels. The second parameter low is the low threshold which is specified as a fraction of a computed high threshold. The third parameter high is the high threshold to use in the hysteresis and is specified as a percentage point in the distribution of gradient magnitude values for the candidate edge pixels. 
+        </p>
+    <br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/canny.jpeg'%}" alt="My image" class="center">
+        </div>
+    </div>
+<br>
+
+    <p>
+       <b><strong> Calculation of Derivative of An Image</b></strong><br><br>
+The derivative of a matrix is calculated by an operator called the Laplacian. In order to calculate a Laplacian, you will need to calculate first two derivatives, called derivatives of Sobel, each of which takes into account the gradient variations in a certain direction: one horizontal and the other vertical.
+<br><br>
+Horizontal Sobel derivative (Sobel x): It is obtained through the convolution of the image with a matrix called kernel which has always odd size. The kernel with size 3 is the simplest case.
+<br><br>Vertical Sobel derivative (Sobel y): It is obtained through the convolution of the image with a matrix called kernel which has always odd size. The kernel with size 3 is the simplest case.
+<br><br>Convolution is calculated by the following method: Image represents the original image matrix and filter is the kernel matrix
+
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/cannny2.jpeg'%}" alt="My image" class="center">
+        </div>
+    </div>
+<br>
+
+Factor = 11 – 2- 2- 2- 2- 2 = 3
+Offset = 0 Weighted Sum = 124*0 + 19*(-2) + 110*(-2) + 53*11 + 44*(-2) + 19*0 + 60*(-2) + 100*0 = 117
+O[4,2] = (117/3) + 0 = 39
+So in the end to get the Laplacian (approximation) we will need to combine the two previous results (Sobelx and Sobely) and store it in laplacian.    
+</p>
+
+<p>
+
+    <b><strong>Steps to perform Canny Edge Detection</b></strong><br><br>
+    Filter out any noise. The Gaussian filter is used for this purpose. An example of a Gaussian kernel of size =5 that might be used is shown below:
+
+Find the intensity gradient of the image. For this, we follow a procedure analogous to Sobel:
+
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/img.png'%}" alt="My image" class="center">
+        </div>
+    </div>
+<br>
+
+
+Apply a pair of convolution masks (in X and Y directions):
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/canny4.png'%}" alt="My image" >
+        </div>
+    </div>
+<br>
+
+
+Find the gradient strength and direction with:
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/canny5.png'%}" alt="My image" >
+        </div>
+    </div>
+<br>
+
+
+The direction is rounded to one of four possible angles (namely 0, 45, 90 or 135)
+<br>
+Non-maximum suppression is applied. This removes pixels that are not considered to be part of an edge. Hence, only thin lines (candidate edges) will remain.
+<br>
+Hysteresis: The final step. Canny does use two thresholds (upper and lower):
+<br>
+If a pixel gradient is higher than the upper threshold, the pixel is accepted as an edge
+<br>
+If a pixel gradient value is below the lower threshold, then it is rejected.
+<br>
+If the pixel gradient is between the two thresholds, then it will be accepted only if it is connected to a pixel that is above the upper threshold.Canny recommended a upper:lower ratio between 2:1 and 3:1.
+
+
+</p>
+
+<p>
+
+    <b><strong>Canny Edge Detector Algorithm Stages</b></strong><br><br>
+   <b> Noise Reduction</b><br><br>
+    Since edge detection is susceptible to noise in the image, first step is to remove the noise in the image with a 5×5 Gaussian filter. It is important to understand that the selection of the size of the Gaussian kernel will affect the performance of the detector. The larger the size is, the lower the detector’s sensitivity to noise. Additionally, the localization error to detect the edge will slightly increase with the increase of the Gaussian filter kernel size. A 5×5 is a good size for most cases, but this will also vary depending on specific situations.
+    <br><br>
+    <b>Finding Intensity Gradient of the Image</b><br><br>
+    An edge in an image may point in a variety of directions, so the Canny algorithm uses four filters to detect horizontal, vertical and diagonal edges in the blurred image. Smoothened image is then filtered with a Sobel kernel in both horizontal and vertical direction to get first derivative in horizontal direction and vertical direction. From these two images, we can find edge gradient and direction for each pixel. Gradient direction is always perpendicular to edges. It is rounded to one of four angles representing vertical, horizontal and two diagonal directions.
+    <br><br>
+    <b>Non-maximum Suppression</b><br><br>
+    Non-maximum suppression is applied to find “the largest” edge. After applying gradient calculation, the edge extracted from the gradient value is still quite blurred. With respect to criterion 3 listed above, there should only be one accurate response to the edge. Thus non-maximum suppression can help to suppress all the gradient values (by setting them to 0) except the local maxima, which indicate locations with the sharpest change of intensity value. After getting gradient magnitude and direction, a full scan of image is done to remove any unwanted pixels which may not constitute the edge. For this, at every pixel, pixel is checked if it is a local maximum in its neighborhood in the direction of gradient. 
+    <br><br>
+    <b>Hysteresis Thresholding</b><br><br>
+    This stage decides which are all edges are really edges and which are not. For this, we need two threshold values, minVal and maxVal. Any edges with intensity gradient more than maxVal are sure to be edges and those below minVal are sure to be non-edges, so discarded. Those who lie between these two thresholds are classified edges or non-edges based on their connectivity. If they are connected to “sure-edge” pixels, they are considered to be part of edges. Otherwise, they are also discarded
+    
+    This stage also removes small pixels noises on the assumption that edges are long lines.So what we finally get is strong edges in the image.
+    <br><br>
+    <b><strong>OpenCV Canny Function</b></strong><br><br>
+    OpenCV puts all the above in single function, cv2.Canny().<br> Syntax of the function is:<br>
+    
+    edges = cv2.Canny(img,100,200, aperture_size =3, L2gradient = True )<br>
+    
+    First argument is our input image<br>
+    Second and third arguments are our minVal and maxVal respectively<br>
+    Third argument is aperture_size. It is the size of Sobel kernel used for find image gradients. By default it is 3<br>
+    Last argument is L2gradient which specifies the equation for finding gradient magnitude<br>
+    
+</p>
+<p><b><strong> Upload your image to check filter</b></strong><br>
+  
+        <form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+            <input type="file" id="myFile" name="filename">
+            <br>
+            <input type="submit">
+          </form>
+
+
+        </p>
+
+        <img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+
+
+</div>
+
+{% endblock %}

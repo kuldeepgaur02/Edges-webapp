@@ -1,0 +1,113 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Hirsch{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+{% endblock %}
+{% block body %} 
+{% load static %}
+<div class="container">
+<p align="center"><strong><b>INTRODUCTION</b></strong></p>
+<br>
+<p>
+  Edge-detection
+  method proposed by Kirsch finds maximum edge strength
+  in a few pre-determined directions. The operator takes a
+  single kernel mask and rotates in45 increments through all 0
+  8 compass directions (ie) N,S,E,W,NW,SW,NE,SE.<br>The
+  edge magnitude is calculated as the maximum magnitude
+  across all directions [8]. Each pixel of images all use these
+  8 masking to make convolution, each masking has great
+  response to a certain edge direction, the maximal value of
+  all 8 directions is set to output value of this point. <br>The
+  masking sequence number of greatest response
+  constitutes the code of edge direction.
+  Assume, theoriginalsub-imageof3×3isasfollowing
+  <br>
+
+
+ Where as the size of edge gradientis
+ <br>
+  <div class="row">
+         <div class="column">
+             <img src="{% static 'edop/k1.png'%}" alt="My image" class="center">
+         </div>
+     </div>
+ <br>
+ If the upper subscriptsarebeyond 7, divide by 4 together,reminder and k=0, 1, 7. The following 8 templates are
+ <br>
+  <div class="row">
+         <div class="column">
+             <img src="{% static 'edop/k2.png'%}" alt="My image" class="center">
+         </div>
+     </div>
+ <br>
+ <br>
+ When the edges are extracted, the previous templates
+are multiplied by 3x3 region of the image and choose the
+template of biggest output value. Then take this maximal
+value as the edge intensity of central pixel point, take the
+maximal value template Mk ’s direction k (k ’s value is<br>
+illustrated as Figure 9 1) as its edge direction. Supposed
+a point P(j, i) in a image and its grayscale values of eight
+neighborhood unions are shown as Figure (2) and set<br>
+qk(k=0,1,… 7) as edge intensity of the k th direction when
+a image is dealt with by the k th template of Kirsch
+operator, then the edge intensity of P ( i, j) is S( i, j)
+maxq (k k =0,1,…7 ) and the corresponding edge direction
+D( i, j)={k/qkis maximum}<br>
+
+<br>
+  <div class="row">
+         <div class="column">
+             <img src="{% static 'edop/k3.png'%}" alt="My image" class="center">
+         </div>
+     </div>
+ <br>
+ <br>
+
+ Fig. 1: Edgedirection
+ <br>
+ <br>
+  <div class="row">
+         <div class="column">
+             <img src="{% static 'edop/k4.png'%}" alt="My image" class="center">
+         </div>
+     </div>
+ <br>
+ <br>
+ Fig. 2: P (i,j) and its gray scale of eight neighborhood
+unions
+<br><br>
+    </p>
+<p><b><strong> Upload your image to check filter</b></strong><br>
+    <form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+        <input type="file" id="myFile" name="filename">
+        <br>
+        <input type="submit">
+      </form>
+<img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+
+
+</p>
+</div>
+
+{% endblock %}

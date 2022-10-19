@@ -1,0 +1,47 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Combination{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+
+{% endblock %}
+{% block body %} 
+{% load static %}
+
+
+<div class="container">
+<p>Select the combinations you want see on your uploaded image</p>
+
+<form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+  <input type="checkbox" value =0 name="sobel" onclick="changeValueCheckbox(this)">sobel <br>
+  
+  <input type="checkbox" value =0 name="canny" onclick="changeValueCheckbox(this)">canny<br>
+
+  
+  <input type="checkbox" value= 0 name="robert" onclick="changeValueCheckbox(this)">Robert<br>
+
+  <input type="checkbox" value=0 name="schar" onclick="changeValueCheckbox(this)">Schar<br>
+
+  <input type="checkbox" value=0 name="laplacian" onclick="changeValueCheckbox(this)">Laplacian<br>
+
+  <input type="checkbox"  value=0 name="prewitt" onclick="changeValueCheckbox(this)">Prewitt<br>
+
+  <input type="checkbox"  value=0 name="Kirsch" onclick="changeValueCheckbox(this)">Kirsch<br>
+  <br><br>
+  <p><b><strong> Upload your image to check filter</b></strong><br>
+  <input type="file" id="myFile" name="filename">
+  <br><br>
+  <input type="submit">
+
+</form>
+<img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+  </div>
+
+  <script src = "{%static 'js/index.js'%}"></script>
+{% endblock %}

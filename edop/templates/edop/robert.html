@@ -1,0 +1,148 @@
+{% extends 'edop/basic.html' %}
+
+{% block title%} Robert Edge{% endblock %}
+{% block css %} 
+.container
+{
+    padding-top: 50px;
+    padding-left:100px;
+    padding-right: 100px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+ 
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .center {
+    display: block;
+    margin-left: 50%;
+    margin-right:50%;
+    width: 200%;
+    height:100%;
+  }
+{% endblock %}
+{% block body %} 
+{% load static %}
+
+<div class ="container">
+    <p align="center">
+       <b><strong>Roberts Edge Detection</b></strong><br><br></p>
+      <p>
+The Roberts operator measures a 2-D spatial gradient on an image in a straightforward, quick-to-compute manner. As a result, strong spatial gradient zones, which frequently correspond to edges, are highlighted. The operator’s input and output are both grayscale images in their most typical configuration. The estimated absolute magnitude of the input image’s spatial gradient at that position is represented by pixel values at each place in the output.  
+<br><br>
+<b><strong>Roberts cross operator</b></strong><br><br>
+The Roberts cross operator is used in image processing and computer vision for edge detection. Lawrence Roberts proposed it in 1963, and it was one of the first edge detectors. The Roberts cross operator is a differential operator that approximates an image’s gradient via discrete differentiation, which is accomplished by computing the sum of the squares of the differences between diagonally adjacent pixels.  
+<br><br>
+<b><strong>Approach</strong></b><br><br>
+
+The operator is made up of a pair of 2×2 convolution masks, as shown. One mask<br> is merely the other turned 90 degrees. This is a lot like the Sobel operator. 
+
+
+<table class="table table-dark">
+       
+    <tbody>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>-1</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>-1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <th scope="row"></th>
+        <td>0</td>
+        <td>1</td>
+      </tr>
+     <br><br>
+
+    </tbody>
+  </table>
+  These masks, one for each of the two perpendicular orientations, are designed to respond maximally to edges running at 45° to the pixel grid.<br> The masks can be applied to the input image independently to produce separate gradient component measurements in each orientation (call these G_x   and G_y  ). <br>These can then be combined to determine the absolute magnitude and orientation of the gradient at each site. The gradient magnitude is given by 
+
+     <br><br>
+
+     G = \sqrt{G_x^2+G_y^2}
+   <br><br>
+     The angle of orientation of the edge giving rise to the spatial gradient (relative to the pixel grid orientation) is given by:
+<br><br>
+\theta = \arctan(\frac{G_x}{G_y})-\frac{3\pi}{4}
+<br><br>
+In this case, orientation 0 is taken to mean that the direction of maximum contrast from black to white runs from left to right on the image, and other angles are measured anti-clockwise from this.
+   <br><br> 
+<b>Steps:</b><br><br> 
+
+Import all the libraries required.<br>
+Read the image and convert it to grayscale.<br><br>
+<b>Syntax:</b><br>
+
+img = cv2.imread(“path”,0).astype(‘float64’)<br>
+
+img/=255.0<br>
+<br>
+
+<b>Initialize pair of  Roberts cross operator :</b><br><br>
+<b>Syntax:</b><br><br>
+
+roberts_cross_v = np.array( [[1, 0 ], [0,-1 ]] )
+<br>
+roberts_cross_h = np.array( [[ 0, 1 ], [ -1, 0 ]] )
+<br>
+<b>Calculate G_x   and G_y</b><br><br>
+<b>Syntax:</b><br><br>
+
+vertical = ndimage.convolve( img, roberts_cross_v )
+<br>
+horizontal = ndimage.convolve( img, roberts_cross_h )
+<br><br>
+<b>Calculate G (Gradient Magnitude).</b><br><br>
+<b>Syntax:</b><br><br>
+
+edged_img = np.sqrt( np.square(horizontal) + np.square(vertical))
+<br><br>
+
+<b><strong>Input Image</b></strong>
+<br>
+ <div class="row">
+        <div class="column">
+            <img src="{% static 'edop/robert1.jpeg' %}" alt="My image" class="center">
+        </div>
+    </div>
+<br><br>
+
+{% comment %} <b><strong>Output Image</b></strong>
+<br>
+        <div class="column">
+             <img src="{% static 'edop/robert2.jpeg' %}" alt="My image" class="center"> 
+        </div>
+      </div> {% endcomment %}
+
+<br><br>
+<br>
+<br>
+</p>
+<p><b><strong> Upload your image to check filter</b></strong><br>
+  <form action="" method=POST enctype="multipart/form-data"> {% csrf_token %}
+      <input type="file" id="myFile" name="filename">
+      <br>
+      <input type="submit">
+  </form>
+  <img src = "{%static 'images/hello.jpeg'%}" height = 500px>
+</div>
+
+{% endblock %}
